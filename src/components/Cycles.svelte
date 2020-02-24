@@ -10,11 +10,31 @@
 
 </style>
 
-<section>
+<!--
+<pre>
+  <code>{JSON.stringify(dataDisplay, null, 2)}</code>
+</pre>
+-->
+<section style="margin-top: 96px;">
   <div class="container">
     <ul class="grid">
       <li class="zone a">
-        {@html ba("<div class='title'>", '</div>', dataDisplay.zoneA.title)}
+
+        {#if dataDisplay.zoneA.title}
+          <a
+            class="thumb"
+            href="javascript: void 0;"
+            style="background-image:url({dataDisplay.zoneA.img})">
+            <div class="mask" />
+            <div class="text">
+              <div class="label">Rétrospective</div>
+              <div class="title">{dataDisplay.zoneA.title}</div>
+              <div class="dates">
+                {concatDates(dayjs(dataDisplay.zoneA.dateFrom).format('D MMMM YYYY'), dayjs(dataDisplay.zoneA.dateTo).format('D MMMM YYYY'), ' ', 'Du ', ' au ')}
+              </div>
+            </div>
+          </a>
+        {/if}
       </li>
       <li class="zone b">
         <div class="title">Exposition Louis de Funès</div>
@@ -25,7 +45,7 @@
       {:else}
         {#each dataDisplay.zoneC as cycle, i}
           <li class="zone c">
-            <div class="thumb" />
+            <div class="thumb" style="background-image:url({cycle.img})" />
             <div class="text">
               <div class="label">Rétrospective</div>
               <div class="title">{cycle.title}</div>
@@ -35,6 +55,20 @@
             </div>
           </li>
         {/each}
+        <!--
+        {#each dataDisplay.zoneD as cycle, i}
+          <li class="zone c">
+            <div class="thumb" style="background-image:url({cycle.img})" />
+            <div class="text">
+              <div class="label">{cycle.surcycle}</div>
+              <div class="title">{cycle.title}</div>
+              <div class="dates">
+                {concatDates(dayjs(cycle.dateFrom).format('D MMMM YYYY'), dayjs(cycle.dateTo).format('D MMMM YYYY'), ' ', 'Du ', ' au ')}
+              </div>
+            </div>
+          </li>
+        {/each}
+-->
       {/if}
 
     </ul>

@@ -24,9 +24,31 @@
       "https://gist.githubusercontent.com/nltesown/a310518cfa88cd52b13a55f3e737d75f/raw/cycles-ext-2.json"
     )).json();
 
+    let dataImg = await (await fetch(
+      "https://gist.githubusercontent.com/nltesown/3da425f30589064cebc6ce13ed2f7d10/raw/cycles-img.json"
+    )).json();
+
     // NOTICE: je retire manuellement l'item Fellini/Picasso (= exposition)
     dataCyclesPonctuels = _(dataCyclesPonctuels)
       .filter(d => d.idCycle !== 442)
+      .value();
+
+    // Associe l'URL de l'illustration de cycle ponctuel (Attention : son chemin est `img.img`).
+    dataCyclesPonctuels = _(
+      _.merge(
+        _(dataCyclesPonctuels)
+          .groupBy("idCycleSite")
+          // .groupBy("idCycleProg")
+          .mapValues(e => e[0])
+          .value(),
+        _(dataImg)
+          .groupBy("idCycleSite")
+          // .groupBy("idCycleProg")
+          .mapValues(e => e[0])
+          .value()
+      )
+    )
+      .map()
       .value();
 
     dataCycles = [dataCyclesPonctuels, dataCyclesReguliers];

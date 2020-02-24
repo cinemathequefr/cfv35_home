@@ -47,7 +47,7 @@ function prepData(data, curDate, idPinned, options) {
             .isBefore(curDate, "days") ||
           pubDate(dayjs(b.dateFrom).startOf("day")).isAfter(curDate, "days")
     )
-    // Propriétés calculées (TODO: convertir en amont les dates en objets dayjs)
+    // Propriétés calculées
     .map(a =>
       _(a)
         .thru(b => {

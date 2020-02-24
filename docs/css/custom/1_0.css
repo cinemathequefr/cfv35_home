@@ -2,7 +2,7 @@ ul.grid {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   grid-template-rows: auto;
-  grid-gap: 12px;
+  grid-gap: 8px;
 }
 
 .zone {
@@ -10,11 +10,62 @@ ul.grid {
 }
 
 .zone.a {
+  position: relative;
   height: 425px;
-  background-color: #936;
   grid-column: 1 / 3;
   grid-row: 1;
 }
+
+.zone.a > .thumb {
+  display: block;
+  flex: 1 0 auto;
+  align-self: auto;
+  width: 100%;
+  height: 425px;
+  background-color: #eee;
+  background-position: bottom center;
+  background-size: cover;
+  /* background-image: none !important; */
+  align-self: stretch;
+}
+
+.zone.a .mask {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0.9) 0%,
+    rgba(0, 0, 0, 0) 50%,
+    rgba(0, 0, 0, 0) 100%
+  );
+}
+
+.zone.a .text {
+  position: absolute;
+  bottom: 8px;
+  left: 12px;
+  width: 90%;
+  color: #fff;
+  font-family: QuicksandCF;
+  text-transform: uppercase;
+}
+
+.zone.a .title {
+  font-size: 2rem;
+  font-weight: 600;
+  line-height: 2rem;
+}
+
+.zone.a .label,
+.zone.a .dates {
+  line-height: 2rem;
+  font-size: 1.125rem;
+  font-weight: 300;
+}
+
 .zone.b {
   background-color: #963;
   grid-column: 3;
@@ -23,7 +74,6 @@ ul.grid {
 }
 
 .zone.c {
-  background-color: #eee;
   height: 295px;
   grid-column: span 1;
   grid-row: span 1;
@@ -52,7 +102,10 @@ ul.grid {
   align-self: auto;
   width: 100%;
   height: 210px;
-  background-color: #396;
+  background-color: #eee;
+  background-position: bottom center;
+  background-size: cover;
+  /* background-image: none !important; */
   align-self: stretch;
 }
 
@@ -67,14 +120,14 @@ ul.grid {
   color: #111;
 }
 
-.label {
+.zone.c .label {
   display: inline-block;
   height: 28px;
   line-height: 28px;
   font-size: 13px;
   padding: 0 12px;
   text-transform: uppercase;
-  background-color: #eee;
+  background-color: #fff;
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
@@ -84,7 +137,7 @@ ul.grid {
   transition: 0.2s;
 }
 
-.title {
+.zone.c .title {
   display: inline-block;
   margin-top: 16px;
   margin-bottom: 4px;
@@ -94,7 +147,6 @@ ul.grid {
   text-transform: uppercase;
 }
 
-.zone.a > .title,
 .zone.b > .title {
   color: #eee;
   font-size: 1.25rem;
