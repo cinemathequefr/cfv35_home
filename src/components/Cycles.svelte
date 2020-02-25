@@ -3,18 +3,16 @@
   dayjs.locale("fr");
   import "../lib/dayjs_custom_locale_fr.js";
   import { beforeAfterStr as ba, concatDates } from "../lib/format.js";
+  import _ from "lodash";
   export let dataDisplay;
 </script>
 
-<style>
-
-</style>
-
-<!--
+<!-- 
 <pre>
   <code>{JSON.stringify(dataDisplay, null, 2)}</code>
 </pre>
 -->
+
 <section style="margin-top: 96px;">
   <div class="container">
     <ul class="grid">
@@ -38,7 +36,6 @@
       <li class="zone b">
         <div class="title">Exposition Louis de Funès</div>
       </li>
-
       {#if dataDisplay.zoneC.length === 0}
         <li class="zone c ghost" />
       {:else}
@@ -53,36 +50,27 @@
                   {concatDates(dayjs(cycle.dateFrom).format('D MMMM YYYY'), dayjs(cycle.dateTo).format('D MMMM YYYY'), ' ', 'Du ', ' au ')}
                 </div>
               </div>
-
             </a>
-            <!--
-            <div class="thumb" style="background-image:url({cycle.img})" />
-            <div class="text">
-              <div class="label">{cycle.label}</div>
-              <div class="title">{cycle.title}</div>
-              <div class="dates">
-                {concatDates(dayjs(cycle.dateFrom).format('D MMMM YYYY'), dayjs(cycle.dateTo).format('D MMMM YYYY'), ' ', 'Du ', ' au ')}
-              </div>
-            </div>
--->
           </li>
         {/each}
-        <!--
-        {#each dataDisplay.zoneD as cycle, i}
-          <li class="zone c">
-            <div class="thumb" style="background-image:url({cycle.img})" />
-            <div class="text">
-              <div class="label">{cycle.surcycle}</div>
-              <div class="title">{cycle.title}</div>
-              <div class="dates">
-                {concatDates(dayjs(cycle.dateFrom).format('D MMMM YYYY'), dayjs(cycle.dateTo).format('D MMMM YYYY'), ' ', 'Du ', ' au ')}
-              </div>
-            </div>
-          </li>
-        {/each}
--->
       {/if}
-
+    </ul>
+    <ul class="grid">
+      {#each dataDisplay.zoneD as cycle, i}
+        <li class="zone d">
+          <a class="surcycle" href="javascript: void 0;">{cycle.surcycle}</a>
+          <a class="main" href="javascript: void 0;">
+            {#if cycle.id}
+              <div class="text">
+                <div class="title">{cycle.title}</div>
+                <div class="dates">
+                  {_.capitalize(concatDates(dayjs(cycle.date).format('dddd D MMMM YYYY'), dayjs(cycle.date).format('dddd D MMMM YYYY'), ' ', 'Du ', ' au '))}
+                </div>
+              </div>
+            {/if}
+          </a>
+        </li>
+      {/each}
     </ul>
   </div>
 </section>

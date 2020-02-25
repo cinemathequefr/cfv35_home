@@ -3,6 +3,7 @@ ul.grid {
   grid-template-columns: 1fr 1fr 1fr;
   grid-template-rows: auto;
   grid-gap: 8px;
+  margin-bottom: 36px;
 }
 
 .zone {
@@ -11,12 +12,6 @@ ul.grid {
 }
 
 .zone a {
-  position: absolute;
-  display: block;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
   text-decoration: none;
 }
 
@@ -30,6 +25,16 @@ ul.grid {
   height: 425px;
   grid-column: 1 / 3;
   grid-row: 1;
+}
+
+.zone.a a,
+.zone.c a {
+  position: absolute;
+  display: block;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
 }
 
 .mask {
@@ -66,7 +71,7 @@ ul.grid {
 }
 
 .zone.a .title {
-  font-size: 3rem;
+  font-size: 2.5rem;
   font-weight: 600;
 }
 
@@ -92,7 +97,7 @@ ul.grid {
 .zone.c a:hover,
 .zone.c a:active,
 .zone.c a:hover .label,
-.zone.c a:active .labek {
+.zone.c a:active .label {
   background-color: #ccc;
   transition: 0.2s;
 }
@@ -137,4 +142,49 @@ ul.grid {
   font-size: 1.125rem;
   font-family: QuicksandCF;
   text-transform: uppercase;
+}
+
+.zone.d {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+  align-content: flex-start;
+  align-items: flex-start;
+  height: 210px;
+}
+
+.zone.d a.surcycle {
+  flex: 0 1 auto;
+  align-self: flex-end;
+  background-color: #eee;
+  padding: 8px;
+  text-transform: uppercase;
+  font-size: 0.875rem;
+}
+
+.zone.d a.surcycle:hover,
+.zone.d a.surcycle:active {
+  background-color: #ccc;
+  transition: 0.2s;
+}
+
+.zone.d a.main {
+  flex: 1 1 auto;
+  align-self: stretch;
+  background-color: #eee;
+  padding: 8px;
+}
+
+.zone.d a.main:hover,
+.zone.d a.main:active {
+  background-color: #ccc;
+  transition: 0.2s;
+}
+
+.zone.d .title {
+  font-family: QuicksandCF;
+  text-transform: uppercase;
+  font-weight: 700;
+  font-size: 1.125rem;
 }
