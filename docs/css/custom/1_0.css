@@ -28,6 +28,7 @@ ul.grid {
 }
 
 .zone.a a,
+.zone.b a,
 .zone.c a {
   position: absolute;
   display: block;
@@ -52,7 +53,8 @@ ul.grid {
   );
 }
 
-.zone.a .thumb {
+.zone.a .thumb,
+.zone.b .thumb {
   position: absolute;
   top: 0;
   right: 0;

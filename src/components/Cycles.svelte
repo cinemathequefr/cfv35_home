@@ -34,7 +34,10 @@
         </li>
       {/if}
       <li class="zone b">
-        <div class="title">Exposition Louis de Funès</div>
+        <a href="javascript: void 0;">
+          <div class="thumb" style="background-image:url(img/expo_ldf.jpg)" />
+        </a>
+
       </li>
       {#if dataDisplay.zoneC.length === 0}
         <li class="zone c ghost" />
