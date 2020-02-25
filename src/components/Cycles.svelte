@@ -18,24 +18,23 @@
 <section style="margin-top: 96px;">
   <div class="container">
     <ul class="grid">
-      <li class="zone a">
-
-        {#if dataDisplay.zoneA.title}
-          <a
-            class="thumb"
-            href="javascript: void 0;"
-            style="background-image:url({dataDisplay.zoneA.img})">
+      {#if dataDisplay.zoneA.title}
+        <li class="zone a">
+          <a href="javascript: void 0;">
+            <div
+              class="thumb"
+              style="background-image:url({dataDisplay.zoneA.img})" />
             <div class="mask" />
             <div class="text">
-              <div class="label">Rétrospective</div>
+              <div class="label">{dataDisplay.zoneA.label}</div>
               <div class="title">{dataDisplay.zoneA.title}</div>
               <div class="dates">
                 {concatDates(dayjs(dataDisplay.zoneA.dateFrom).format('D MMMM YYYY'), dayjs(dataDisplay.zoneA.dateTo).format('D MMMM YYYY'), ' ', 'Du ', ' au ')}
               </div>
             </div>
           </a>
-        {/if}
-      </li>
+        </li>
+      {/if}
       <li class="zone b">
         <div class="title">Exposition Louis de Funès</div>
       </li>
@@ -45,14 +44,27 @@
       {:else}
         {#each dataDisplay.zoneC as cycle, i}
           <li class="zone c">
+            <a href="javascript: void 0;">
+              <div class="thumb" style="background-image:url({cycle.img})" />
+              <div class="text">
+                <div class="label">{cycle.label}</div>
+                <div class="title">{cycle.title}</div>
+                <div class="dates">
+                  {concatDates(dayjs(cycle.dateFrom).format('D MMMM YYYY'), dayjs(cycle.dateTo).format('D MMMM YYYY'), ' ', 'Du ', ' au ')}
+                </div>
+              </div>
+
+            </a>
+            <!--
             <div class="thumb" style="background-image:url({cycle.img})" />
             <div class="text">
-              <div class="label">Rétrospective</div>
+              <div class="label">{cycle.label}</div>
               <div class="title">{cycle.title}</div>
               <div class="dates">
                 {concatDates(dayjs(cycle.dateFrom).format('D MMMM YYYY'), dayjs(cycle.dateTo).format('D MMMM YYYY'), ' ', 'Du ', ' au ')}
               </div>
             </div>
+-->
           </li>
         {/each}
         <!--

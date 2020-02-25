@@ -7,40 +7,52 @@ ul.grid {
 
 .zone {
   box-sizing: border-box;
+  position: relative;
+}
+
+.zone a {
+  position: absolute;
+  display: block;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  text-decoration: none;
+}
+
+.zone .thumb {
+  display: block;
+  background-position: bottom center;
+  background-size: cover;
 }
 
 .zone.a {
-  position: relative;
   height: 425px;
   grid-column: 1 / 3;
   grid-row: 1;
 }
 
-.zone.a > .thumb {
-  display: block;
-  flex: 1 0 auto;
-  align-self: auto;
-  width: 100%;
-  height: 425px;
-  background-color: #eee;
-  background-position: bottom center;
-  background-size: cover;
-  /* background-image: none !important; */
-  align-self: stretch;
-}
-
-.zone.a .mask {
+.mask {
   position: absolute;
+  display: block;
   top: 0;
   right: 0;
-  bottom: 0;
   left: 0;
+  bottom: 0;
   background: linear-gradient(
     to top,
     rgba(0, 0, 0, 0.9) 0%,
     rgba(0, 0, 0, 0) 50%,
     rgba(0, 0, 0, 0) 100%
   );
+}
+
+.zone.a .thumb {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
 }
 
 .zone.a .text {
@@ -54,16 +66,8 @@ ul.grid {
 }
 
 .zone.a .title {
-  font-size: 2rem;
+  font-size: 3rem;
   font-weight: 600;
-  line-height: 2rem;
-}
-
-.zone.a .label,
-.zone.a .dates {
-  line-height: 2rem;
-  font-size: 1.125rem;
-  font-weight: 300;
 }
 
 .zone.b {
@@ -83,33 +87,22 @@ ul.grid {
   justify-content: flex-start;
   align-content: flex-start;
   align-items: flex-end;
-  cursor: pointer;
+}
+
+.zone.c a:hover,
+.zone.c a:active,
+.zone.c a:hover .label,
+.zone.c a:active .labek {
+  background-color: #ccc;
   transition: 0.2s;
 }
 
-.zone.c:hover,
-.zone.c:hover .label {
-  background-color: #ccc;
-}
-
-.zone.c.ghost {
-  grid-column: 1 / span 1;
-  grid-row: 2 / span 1;
-}
-
-.zone.c > .thumb {
-  flex: 1 0 auto;
-  align-self: auto;
-  width: 100%;
+.zone.c .thumb {
+  position: relative;
   height: 210px;
-  background-color: #eee;
-  background-position: bottom center;
-  background-size: cover;
-  /* background-image: none !important; */
-  align-self: stretch;
 }
 
-.zone.c > .text {
+.zone.c .text {
   position: relative;
   flex: 1 0 auto;
   align-self: auto;
@@ -121,20 +114,19 @@ ul.grid {
 }
 
 .zone.c .label {
+  position: absolute;
   display: inline-block;
+  box-sizing: border-box;
+  top: -28px;
+  left: 50%;
+  bottom: 28px;
   height: 28px;
   line-height: 28px;
   font-size: 13px;
   padding: 0 12px;
   text-transform: uppercase;
   background-color: #fff;
-  position: absolute;
-  left: 50%;
   transform: translateX(-50%);
-  top: -28px;
-  bottom: 28px;
-  box-sizing: border-box;
-  transition: 0.2s;
 }
 
 .zone.c .title {
@@ -145,11 +137,4 @@ ul.grid {
   font-size: 1.125rem;
   font-family: QuicksandCF;
   text-transform: uppercase;
-}
-
-.zone.b > .title {
-  color: #eee;
-  font-size: 1.25rem;
-  margin: 0;
-  padding: 4px;
 }
