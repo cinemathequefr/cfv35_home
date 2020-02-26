@@ -27,7 +27,8 @@
               <div class="label">{dataDisplay.zoneA.label}</div>
               <div class="title">{dataDisplay.zoneA.title}</div>
               <div class="dates">
-                {concatDates(dayjs(dataDisplay.zoneA.dateFrom).format('D MMMM YYYY'), dayjs(dataDisplay.zoneA.dateTo).format('D MMMM YYYY'), ' ', 'Du ', ' au ')}
+                {concatDates(dayjs(dataDisplay.zoneA.dateFrom).format('D MMMM'), dayjs(dataDisplay.zoneA.dateTo).format('D MMMM'), ' ', 'Du ', ' au ')}
+                <!-- {concatDates(dayjs(dataDisplay.zoneA.dateFrom).format('D MMMM YYYY'), dayjs(dataDisplay.zoneA.dateTo).format('D MMMM YYYY'), ' ', 'Du ', ' au ')} -->
               </div>
             </div>
           </a>
@@ -50,7 +51,8 @@
                 <div class="label">{cycle.label}</div>
                 <div class="title">{cycle.title}</div>
                 <div class="dates">
-                  {concatDates(dayjs(cycle.dateFrom).format('D MMMM YYYY'), dayjs(cycle.dateTo).format('D MMMM YYYY'), ' ', 'Du ', ' au ')}
+                  {concatDates(dayjs(cycle.dateFrom).format('D MMMM'), dayjs(cycle.dateTo).format('D MMMM'), ' ', 'Du ', ' au ')}
+                  <!-- {concatDates(dayjs(cycle.dateFrom).format('D MMMM YYYY'), dayjs(cycle.dateTo).format('D MMMM YYYY'), ' ', 'Du ', ' au ')} -->
                 </div>
               </div>
             </a>
@@ -67,7 +69,8 @@
               <div class="text">
                 <div class="title">{cycle.title}</div>
                 <div class="dates">
-                  {_.capitalize(concatDates(dayjs(cycle.date).format('dddd D MMMM YYYY'), dayjs(cycle.date).format('dddd D MMMM YYYY'), ' ', 'Du ', ' au '))}
+                  {_.capitalize(concatDates(dayjs(cycle.date).format('ddd D MMMM'), dayjs(cycle.date).format('ddd D MMMM'), ' ', 'Du ', ' au '))}
+                  <!-- {_.capitalize(concatDates(dayjs(cycle.date).format('dddd D MMMM YYYY'), dayjs(cycle.date).format('dddd D MMMM YYYY'), ' ', 'Du ', ' au '))} -->
                 </div>
               </div>
             {/if}
