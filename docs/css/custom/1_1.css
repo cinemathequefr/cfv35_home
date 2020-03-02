@@ -113,7 +113,6 @@ ul.grid {
 
 .zone.c .text {
   position: relative;
-  overflow: hidden;
   flex: 1 0 auto;
   align-self: auto;
   width: 100%;
@@ -141,13 +140,14 @@ ul.grid {
 
 .zone.c .title {
   display: inline-block;
+  overflow: hidden;
   margin-top: 16px;
   margin-bottom: 4px;
   font-weight: 700;
   font-size: 1.125rem;
   font-family: QuicksandCF;
   text-transform: uppercase;
-  white-space: nowrap;
+  /* white-space: nowrap; */
 }
 
 .zone.d {

@@ -115,7 +115,6 @@ ul.grid {
 
 .zone.c .text {
   position: relative;
-  overflow: hidden;
   flex: 1 0 auto;
   align-self: auto;
   width: 100%;
@@ -149,7 +148,7 @@ ul.grid {
   font-size: 1.125rem;
   font-family: QuicksandCF;
   text-transform: uppercase;
-  white-space: nowrap;
+  /* white-space: nowrap; */
 }
 .zone.d {
   display: flex;

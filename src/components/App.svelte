@@ -13,7 +13,7 @@
   let lookAheadReg = 13;
   let dataCycles = [];
   let dataDisplay;
-  let idPinned;
+  let idPinned = 570;
 
   onMount(async () => {
     let dataCyclesPonctuels = await (await fetch(

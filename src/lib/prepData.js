@@ -35,8 +35,6 @@ function prepData(data, curDate, idPinned, options) {
     )
     .value();
 
-  idPinned = 140;
-
   // Cycles ponctuels
 
   // On élimine les cycles non publiés ou terminés
@@ -70,7 +68,8 @@ function prepData(data, curDate, idPinned, options) {
           let progressPositive = progress > 0 ? progress : 0;
           return _({})
             .assign(a, {
-              id: b.idCycleProg,
+              id: b.idCycleSite,
+              // id: b.idCycleProg,
               dateFrom: dateFrom,
               dateTo: dateTo,
               startsIn: startsIn,
