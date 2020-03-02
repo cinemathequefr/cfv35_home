@@ -19,8 +19,6 @@ ul.grid {
   display: block;
   background-position: bottom center;
   background-size: cover;
-  background-image: none !important;
-  background-color: #369;
 }
 
 .zone.a {
@@ -151,6 +149,7 @@ ul.grid {
   text-transform: uppercase;
   white-space: nowrap;
 }
+
 .zone.d {
   display: flex;
   flex-direction: column;

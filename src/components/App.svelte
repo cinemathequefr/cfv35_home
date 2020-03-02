@@ -7,7 +7,7 @@
   import Cycles from "./Cycles.svelte";
   import { prepData } from "../lib/prepData.js";
 
-  let customCss = "1_0";
+  let customCss = "1_1";
   let curDate = dayjs().startOf("day");
   let lookAheadPonc = 21;
   let lookAheadReg = 13;
@@ -38,12 +38,10 @@
       _.merge(
         _(dataCyclesPonctuels)
           .groupBy("idCycleSite")
-          // .groupBy("idCycleProg")
           .mapValues(e => e[0])
           .value(),
         _(dataImg)
           .groupBy("idCycleSite")
-          // .groupBy("idCycleProg")
           .mapValues(e => e[0])
           .value()
       )
@@ -122,5 +120,6 @@
   {curDate.format('YYYY-MM-DD')}
   <select bind:value={customCss}>
     <option value="1_0">1.0</option>
+    <option value="1_1">1.1</option>
   </select>
 </div>

@@ -35,6 +35,8 @@ function prepData(data, curDate, idPinned, options) {
     )
     .value();
 
+  idPinned = 140;
+
   // Cycles ponctuels
 
   // On élimine les cycles non publiés ou terminés
@@ -93,22 +95,11 @@ function prepData(data, curDate, idPinned, options) {
     )
     .value();
 
-  // TEST: tri par valeur absolue de la progression
   dataPonc2 = _(dataPonc2)
     .orderBy(b => Math.abs(b.progress))
     .value();
 
-  // Tri des cycles ponctuels (hypothèse 1)
-  // On intervertit l'ordre des cycles à venir (startsIn >= 0)
-  // dataPonc2 = _(dataPonc2).partition(b => b.startsIn >= 0)
-  //   .map(b => _(b).sortBy(c => c.dateFrom).value())
-  //   .thru(b => _.concat(
-  //     b[0], _.reverse(b[1])
-  //   ))
-  //   .value();
-
   // Cycles réguliers
-
   // On mémorise dataReg1 : dates de séances publiées et non échues
   let dataReg1 = _(data[1]) // (NB : data[1] sont les données des cycles réguliers)
     .mapValues(b =>
