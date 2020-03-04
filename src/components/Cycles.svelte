@@ -1,17 +1,17 @@
 <script>
-  import dayjs from "dayjs";
-  dayjs.locale("fr");
-  import "../lib/dayjs_custom_locale_fr.js";
+  // import dayjs from "dayjs";
+  // dayjs.locale("fr");
+  // import "../lib/dayjs_custom_locale_fr.js";
   import { beforeAfterStr as ba, concatDates, nbsp } from "../lib/format.js";
   import _ from "lodash";
   export let dataDisplay;
 </script>
 
-<!--
+<!-- 
 <pre>
   <code>{JSON.stringify(dataDisplay, null, 2)}</code>
-</pre>
--->
+</pre> -->
+
 {#if dataDisplay}
   <section style="margin-top: 96px;">
     <div class="container">
@@ -37,7 +37,7 @@
                   {#if dataDisplay.zoneA.date}
                     {dataDisplay.zoneA.date.format('ddd D MMMM')}
                   {:else}
-                    {concatDates(dayjs(dataDisplay.zoneA.dateFrom).format('D MMMM'), dayjs(dataDisplay.zoneA.dateTo).format('D MMMM'), ' ', 'Du ', ' au ')}
+                    {concatDates(dataDisplay.zoneA.dateFrom.format('D MMMM'), dataDisplay.zoneA.dateTo.format('D MMMM'), ' ', 'Du ', ' au ')}
                   {/if}
                 </div>
               </div>
@@ -62,7 +62,7 @@
                     {@html nbsp(cycle.title)}
                   </div>
                   <div class="dates">
-                    {concatDates(dayjs(cycle.dateFrom).format('D MMMM'), dayjs(cycle.dateTo).format('D MMMM'), ' ', 'Du ', ' au ')}
+                    {concatDates(cycle.dateFrom.format('D MMMM'), cycle.dateTo.format('D MMMM'), ' ', 'Du ', ' au ')}
                   </div>
                 </div>
               </a>
@@ -84,7 +84,7 @@
                     {@html nbsp(cycle.title)}
                   </div>
                   <div class="dates">
-                    {_.capitalize(concatDates(dayjs(cycle.date).format('ddd D MMMM'), dayjs(cycle.date).format('ddd D MMMM'), ' ', 'Du ', ' au '))}
+                    {_.capitalize(concatDates(cycle.date.format('ddd D MMMM'), cycle.date.format('ddd D MMMM'), ' ', 'Du ', ' au '))}
                   </div>
                 </div>
               {/if}

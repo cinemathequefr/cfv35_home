@@ -12,6 +12,8 @@ import dayjs from "dayjs";
  * @return {Object} { zoneA, isPinned, zoneC, zoneD }
  */
 function prepData(data, curDate, pin, options) {
+  data = _.cloneDeep(data); // Bug fix
+
   let dataPonc = data[0] || [];
   let dataReg = data[1] || [];
   let dataPin = null;
@@ -34,6 +36,7 @@ function prepData(data, curDate, pin, options) {
   if (dataPonc.length === 0 && dataReg.length === 0) return null;
 
   // Etape 1 : Cycles ponctuels : Ajout ou mise au format de propriétés calculées
+  // TODO : les opérations qui ne dépendent pas de la date courante (conversion en dayjs) doivent être faites 1 seule fois, dans App.svelte après le chargement des données
   dataPonc = _(dataPonc)
     .map(a =>
       _(a)
@@ -92,7 +95,6 @@ function prepData(data, curDate, pin, options) {
                 : undefined,
               dateTo: c.dateTo ? dayjs(c.dateTo).startOf("day") : undefined,
               dates: _(c.dates)
-                .sort()
                 .map(d => dayjs(d).startOf("day"))
                 .filter(d => !pubDate(d).isAfter(curDate)) // (pour prototype seulement) Séances non encore publiées
                 .filter(d => !d.isBefore(curDate)) // Séances passées
@@ -104,7 +106,7 @@ function prepData(data, curDate, pin, options) {
         .filter(c => c.dates.length > 0) // Retire les cycles sans date à venir
         .map(c =>
           _(c)
-            .assign({ date: c.dates[0] })
+            .assign({ date: _.min(c.dates) })
             .value()
         )
         .value()
@@ -131,12 +133,6 @@ function prepData(data, curDate, pin, options) {
           .value();
       }
       // TODO: autres types d'items
-
-      // if (!!dataPin) {
-      //   dataPin = _(dataPin)
-      //     .assign({ type: pin.type })
-      //     .value();
-      // }
       isPinned = !!dataPin;
     }
   }
