@@ -1,53 +1,40 @@
 import _ from "lodash";
 import dayjs from "dayjs";
-// import moment from "moment";
 
 /**
  * prepData
  * Prend les données cycles globales,la date courante (+ indicateur d'item épinglé, options de lookAhead)
  * et renvoie les données à afficher dans les différentes zones du gabarit Cycles.
- * @param {Array} data Collection : données de cycles
+ * @param {Array} data Collection : données de cycles : [ponctuels, réguliers]
  * @param {Object} curDate Objet dayjs : date courante
- * @param {integer} idPinned id du cycle épinglé
+ * @param {integer} pin référence à l'item épinglé : { type: cycle|film|seance|etc., id: }
  * @param {Object} options { lookAheadPonc, lookAheadReg }
  * @return {Object} { zoneA, isPinned, zoneC, zoneD }
  */
+function prepData(data, curDate, pin, options) {
+  let dataPonc = data[0] || [];
+  let dataReg = data[1] || [];
+  let dataPin = null;
+  let isPinned = false;
+  let zoneA = {};
+  let zoneC = [];
+  let zoneD = [];
 
-function prepData(data, curDate, idPinned, options) {
   options = _({})
     .assign(
       {
         lookAheadPonc: 0,
         lookAheadReg: 0,
-        surcycles: [
-          "Aujourd'hui le cinéma",
-          "Cinéma bis",
-          // "Ciné-club Jean Douchet",
-          "Cinéma d'avant-garde",
-          "Séances spéciales",
-          "Conservatoire des techniques",
-          "Fenêtre sur les collections",
-          "Parlons cinéma",
-          "Archi Vives"
-        ]
+        surcycles: []
       },
       options
     )
     .value();
 
-  // Cycles ponctuels
+  if (dataPonc.length === 0 && dataReg.length === 0) return null;
 
-  // On élimine les cycles non publiés ou terminés
-  let dataPonc1 = _(data[0])
-    .reject(b =>
-      b.dateTo === null
-        ? false
-        : dayjs(b.dateTo)
-            .startOf("day")
-            .isBefore(curDate, "days") ||
-          pubDate(dayjs(b.dateFrom).startOf("day")).isAfter(curDate, "days")
-    )
-    // Propriétés calculées
+  // Etape 1 : Cycles ponctuels : Ajout ou mise au format de propriétés calculées
+  dataPonc = _(dataPonc)
     .map(a =>
       _(a)
         .thru(b => {
@@ -69,7 +56,6 @@ function prepData(data, curDate, idPinned, options) {
           return _({})
             .assign(a, {
               id: b.idCycleSite,
-              // id: b.idCycleProg,
               dateFrom: dateFrom,
               dateTo: dateTo,
               startsIn: startsIn,
@@ -82,196 +68,151 @@ function prepData(data, curDate, idPinned, options) {
     )
     .value();
 
-  // console.log(options.lookAheadPonc);
-
-  let dataPonc2 = _(dataPonc1)
-    .filter(
-      b =>
-        dayjs(b.dateFrom)
-          .startOf("day")
-          .diff(curDate, "days") <= options.lookAheadPonc ||
-        b.id === parseInt(idPinned, 10) // On conserve un cycle épinglé
-    )
+  // Etape 2 : Cycles ponctuels : retire les cycles terminés ou non publiés
+  dataPonc = _(dataPonc)
+    .reject(d => {
+      if (d.date === null) return false;
+      return (
+        d.dateTo.isBefore(curDate, "days") ||
+        pubDate(d.dateFrom).isAfter(curDate, "days")
+      );
+    })
     .value();
 
-  dataPonc2 = _(dataPonc2)
-    .orderBy(b => Math.abs(b.progress))
-    .value();
-
-  // Cycles réguliers
-  // On mémorise dataReg1 : dates de séances publiées et non échues
-  let dataReg1 = _(data[1]) // (NB : data[1] sont les données des cycles réguliers)
-    .mapValues(b =>
-      _(b)
-        .map(
-          c =>
-            _({})
-              .assign(c, {
-                dates: filterDates(curDate, c.dates)
-              })
-              .value() // On remplace le tableau des dates initial par le tableau filtré
-        )
-        .value()
-    )
-    .value();
-
-  // - On inscrit dans `date` la date de la prochaine séance du cycle
-  let dataReg2 = _(dataReg1)
-    .mapValues(b =>
+  // Etape 3 : Cycles réguliers : mise au format des dates + retire les dates des séances passées
+  // Ecrit dans une propriété `date` la date de la prochaine séance
+  dataReg = _(dataReg)
+    .mapValues((b, k) =>
       _(b)
         .map(c =>
-          _({})
-            .assign(c, {
-              date:
-                _(c.dates)
-                  .sort()
-                  .head() || null
+          _(c)
+            .assign({
+              dateFrom: c.dateFrom
+                ? dayjs(c.dateFrom).startOf("day")
+                : undefined,
+              dateTo: c.dateTo ? dayjs(c.dateTo).startOf("day") : undefined,
+              dates: _(c.dates)
+                .sort()
+                .map(d => dayjs(d).startOf("day"))
+                .filter(d => !pubDate(d).isAfter(curDate)) // (pour prototype seulement) Séances non encore publiées
+                .filter(d => !d.isBefore(curDate)) // Séances passées
+                .value(),
+              surcycle: k
             })
             .value()
         )
-        .filter(c => !!c.date)
-        .orderBy(c => c.date)
+        .filter(c => c.dates.length > 0) // Retire les cycles sans date à venir
+        .map(c =>
+          _(c)
+            .assign({ date: c.dates[0] })
+            .value()
+        )
         .value()
     )
-    .pickBy(b => b.length > 0) // On élimine les propriétés dont la valeur est un tableau vide
-    .mapValues((
-      b // Seconde itération mapValues pour retenir le (ou les) cycles à conserver dans le surcycle
-    ) =>
-      _(b)
-        .reduce((acc, v, i) => {
-          if (
-            i === 0 ||
-            dayjs(v.date)
-              .startOf("day")
-              .diff(curDate, "days") <= options.lookAheadReg ||
-            v.id === parseInt(idPinned, 10) // On conserve un cycle épinglé
-          ) {
-            return _(acc).concat(v);
-          } else {
-            return _(acc);
-          }
-        }, [])
-        .value()
-    )
+    .pickBy(d => d.length > 0) // Retire les surcycles sans cycle (NB : les surcycles vides seront rajoutés plus loin)
     .value();
 
-  // Rajoute les surcycles vides
-  dataReg2 = _({})
-    .assign(
-      _.zipObject(
-        options.surcycles,
-        _.fill(new Array(options.surcycles.length), [])
-      ),
-      dataReg2
-    )
-    .value();
-
-  // Transforme l'objet en tableau d'objets et nettoye les données inutiles
-  dataReg2 = _(dataReg2)
-    .mapValues((v, k) => {
-      if (v.length > 0) {
-        return _(v)
-          .map(a =>
-            _({})
-              .assign(
-                _(a)
-                  .mapValues((w, m) =>
-                    m === "dateFrom" || m === "dateTo" ? dayjs(w) : w
-                  )
-                  .value(),
-                {
-                  surcycle: k,
-                  date: dayjs(a.date).startOf("day"),
-                  startsIn: dayjs(a.date)
-                    .startOf("day")
-                    .diff(curDate, "days")
-                }
-              )
-              .omit(["dates"])
-              .value()
-          )
+  // Etape 4 : Recherche de données valides à épingler en zone A
+  // Si c'est un cycle, il est retiré de `dataReg` ou `dataPonc`
+  if (pin && !_.isUndefined(pin.type) && !_.isUndefined(pin.id)) {
+    // Cycles ponctuels
+    if (pin.type === "cycle") {
+      dataPonc = _.partition(dataPonc, d => d.id !== parseInt(pin.id, 10));
+      dataPin = dataPonc[1][0];
+      dataPonc = dataPonc[0];
+      // Cycles réguliers
+      if (!dataPin) {
+        dataReg = _(dataReg)
+          .mapValues(d => _.partition(d, e => e.id !== parseInt(pin.id, 10)))
+          .mapValues(d => {
+            dataPin = dataPin || d[1][0];
+            return d[0];
+          })
           .value();
-      } else {
-        return {
-          type: "surcycle",
-          surcycle: k
-        };
       }
-    })
-    .map()
-    .flatten()
-    .orderBy(a => a.date)
-    .value();
-
-  // Isole les données du cycle épinglé dans les cycles ponctuels, puis réguliers
-  dataPonc2 = _.partition(dataPonc2, d => d.id !== parseInt(idPinned, 10));
-  dataReg2 = _.partition(dataReg2, d => d.id !== parseInt(idPinned, 10));
-
-  let pinned = dataPonc2[1][0] || dataReg2[1][0];
-  let ponc = dataPonc2[0];
-  let reg = dataReg2[0];
-  let isPinned;
-
-  if (!pinned) {
-    if (ponc.length > 0) {
-      pinned = ponc.shift();
-    } else if (reg.length > 0) {
-      pinned = reg.shift();
+      // TODO: autres types d'items
+      isPinned = !!dataPin;
     }
-    isPinned = false;
-  } else {
-    isPinned = true;
   }
 
+  // Etape 5 : Filtrage et tri des cycles ponctuels
+  dataPonc = _(dataPonc)
+    .filter(b => b.dateFrom.diff(curDate, "days") <= options.lookAheadPonc)
+    .orderBy(b => Math.abs(b.progress))
+    .value();
+
+  // Etape 6 : Filtrage des cycles réguliers + ajout des surcycles vides + transformation en tableau + tri
+  dataReg = _(dataReg)
+    .mapValues(d =>
+      _(d).reduce((acc, v, i) => {
+        if (i === 0 || v.date.diff(curDate, "days") <= options.lookAheadReg) {
+          return _(acc).concat(v);
+        } else {
+          return acc;
+        }
+      }, [])
+    )
+    .value();
+
+  dataReg = _({})
+    .assign(
+      _(
+        _.zipObject(
+          options.surcycles,
+          _.fill(new Array(options.surcycles.length), [])
+        )
+      )
+        .mapValues((v, k) => {
+          return {
+            surcycle: k
+          };
+        })
+        .value(),
+      dataReg
+    )
+    .map()
+    .flatten()
+    .orderBy(d => d.date)
+    .value();
+
+  // Etape 7 : Si aucun item n'est épinglé, placement du premier cycle (ponctuel ou, à défaut, régulier)
+  if (isPinned === false) {
+    if (dataPonc.length > 0) {
+      dataPin = _.head(dataPonc);
+      dataPonc = _.tail(dataPonc);
+    } else if (dataReg.length > 0) {
+      dataPin = _.head(dataReg);
+      dataReg = _.tail(dataReg);
+    }
+  }
+
+  zoneA = dataPin;
+  zoneC = dataPonc;
+  zoneD = dataReg;
+
   return {
-    zoneA: pinned,
-    isPinned: isPinned,
-    zoneC: ponc,
-    zoneD: reg
+    isPinned,
+    zoneA,
+    zoneC,
+    zoneD
   };
 }
 
 /**
- *
- * @param {string} curDate Date courante
- * @param {Array:string} dates Table de chaînes ISO date
- */
-function filterDates(curDate, dates) {
-  return (
-    _(dates)
-      .filter(d => !pubDate(dayjs(d).startOf("day")).isAfter(curDate)) // Séances dont la date de publication est passée (= elles sont publiées)
-      // .filter(d => pubDate(dayjs(d).startOf("day")).isSameOrBefore(curDate)) // Séances dont la date de publication est passée (= elles sont publiées)
-      .filter(
-        d =>
-          !dayjs(d)
-            .startOf("day")
-            .isBefore(curDate)
-        // dayjs(d)
-        //   .startOf("day")
-        //   .isSameOrAfter(curDate)
-      ) // Séances dont la date de projection n'est pas encore passée
-      .value()
-  );
-}
-/**
  * pubDate
  * Calcule pour une date (de séance) la date théorique de sa publication
- * (le 20 du mois précédent le premier mois du programme trimestriel : 20 mai)
- * EDIT: le 10 du mois
+ * (le 10 du mois précédent le premier mois du programme trimestriel : 10 mai)
  * @param {object} date Objet date dayjs.
  * @return {object} Objet date dayjs.
  */
 function pubDate(date) {
   date = date.startOf("day");
-  return (
-    date
-      .clone()
-      .year(date.year() - (date.month() < 2 ? 1 : 0))
-      .month([12, 12, 3, 3, 3, 6, 6, 6, 9, 9, 9, 12][date.month()] - 2)
-      .date(10)
-      // .date(20)
-      .startOf("day")
-  );
+  return date
+    .clone()
+    .year(date.year() - (date.month() < 2 ? 1 : 0))
+    .month([12, 12, 3, 3, 3, 6, 6, 6, 9, 9, 9, 12][date.month()] - 2)
+    .date(10)
+    .startOf("day");
 }
 
 export { pubDate, prepData };
