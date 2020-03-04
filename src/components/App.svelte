@@ -52,20 +52,20 @@
       .value();
 
     // Associe l'URL de l'illustration de cycle ponctuel (Attention : son chemin est `img.img`).
-    // dataCyclesPonctuels = _(
-    //   _.merge(
-    //     _(dataCyclesPonctuels)
-    //       .groupBy("idCycleSite")
-    //       .mapValues(e => e[0])
-    //       .value(),
-    //     _(dataImg)
-    //       .groupBy("idCycleSite")
-    //       .mapValues(e => e[0])
-    //       .value()
-    //   )
-    // )
-    //   .map()
-    //   .value();
+    dataCyclesPonctuels = _(
+      _.merge(
+        _(dataCyclesPonctuels)
+          .groupBy("idCycleSite")
+          .mapValues(e => e[0])
+          .value(),
+        _(dataImg)
+          .groupBy("idCycleSite")
+          .mapValues(e => e[0])
+          .value()
+      )
+    )
+      .map()
+      .value();
 
     dataCycles = [dataCyclesPonctuels, dataCyclesReguliers];
   });
@@ -113,24 +113,23 @@
   }
 </style>
 
+<!-- 
 {#if dataDisplay}
   <pre>
     <code>{JSON.stringify(dataDisplay, null, 2)}</code>
   </pre>
-{/if}
+{/if} -->
 
-<!--
-  <svelte:head>
+<svelte:head>
   <title>{curDate.format('dddd D MMMM YYYY')}</title>
   {#if customCss !== ''}
     <link rel="stylesheet" href="css/custom/{customCss}.css" />
   {/if}
 </svelte:head>
--->
-<!-- <Cycles {dataDisplay} /> -->
+<Cycles {dataDisplay} />
 
 <!-- Tools -->
-<!--
+
 <div
   class="tools"
   on:click={() => {
@@ -150,4 +149,3 @@
     <option value="1_1">1.1</option>
   </select>
 </div>
--->

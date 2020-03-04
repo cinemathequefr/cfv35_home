@@ -131,6 +131,12 @@ function prepData(data, curDate, pin, options) {
           .value();
       }
       // TODO: autres types d'items
+
+      // if (!!dataPin) {
+      //   dataPin = _(dataPin)
+      //     .assign({ type: pin.type })
+      //     .value();
+      // }
       isPinned = !!dataPin;
     }
   }
@@ -144,13 +150,15 @@ function prepData(data, curDate, pin, options) {
   // Etape 6 : Filtrage des cycles réguliers + ajout des surcycles vides + transformation en tableau + tri
   dataReg = _(dataReg)
     .mapValues(d =>
-      _(d).reduce((acc, v, i) => {
-        if (i === 0 || v.date.diff(curDate, "days") <= options.lookAheadReg) {
-          return _(acc).concat(v);
-        } else {
-          return acc;
-        }
-      }, [])
+      _(d)
+        .reduce((acc, v, i) => {
+          if (i === 0 || v.date.diff(curDate, "days") <= options.lookAheadReg) {
+            return _(acc).concat(v);
+          } else {
+            return acc;
+          }
+        }, [])
+        .value()
     )
     .value();
 
