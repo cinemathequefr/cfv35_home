@@ -221,3 +221,20 @@ ul.grid {
   background-color: #eb5;
   transition: 0.2s;
 }
+
+
+
+
+.btn-right {
+  display: inline-block;
+  background-position: 100% 50%;
+  background-size: 100%;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='14' height='60' viewBox='0 0 1024 448'><path d='M128 192L0 320l192 192L0 704l128 128 320-320L128 192z' /></svg>");
+
+}
+
+
+
+
+
+

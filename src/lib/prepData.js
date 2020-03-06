@@ -14,6 +14,8 @@ import dayjs from "dayjs";
 function prepData(data, curDate, pin, options) {
   data = _.cloneDeep(data); // Bug fix
 
+  console.log(data);
+
   let dataPonc = data[0] || [];
   let dataReg = data[1] || [];
   let dataPin = null;
@@ -41,17 +43,15 @@ function prepData(data, curDate, pin, options) {
     .map(a =>
       _(a)
         .thru(b => {
-          let dateFrom = dayjs(b.dateFrom).startOf("day");
-          let dateTo = dayjs(b.dateTo).startOf("day");
           let startsIn = dayjs(b.dateFrom)
             .startOf("day")
             .diff(curDate, "days");
           let progress =
-            dateTo === null
+            b.dateTo === null
               ? 0
               : Math.round(
-                  (dateFrom.diff(curDate, "days") /
-                    dateFrom.diff(dateTo, "days")) *
+                  (b.dateFrom.diff(curDate, "days") /
+                    b.dateFrom.diff(b.dateTo, "days")) *
                     100,
                   1
                 );
@@ -59,8 +59,6 @@ function prepData(data, curDate, pin, options) {
           return _({})
             .assign(a, {
               id: b.idCycleSite,
-              dateFrom: dateFrom,
-              dateTo: dateTo,
               startsIn: startsIn,
               progress: progress,
               progressPositive: progressPositive
@@ -90,12 +88,7 @@ function prepData(data, curDate, pin, options) {
         .map(c =>
           _(c)
             .assign({
-              dateFrom: c.dateFrom
-                ? dayjs(c.dateFrom).startOf("day")
-                : undefined,
-              dateTo: c.dateTo ? dayjs(c.dateTo).startOf("day") : undefined,
               dates: _(c.dates)
-                .map(d => dayjs(d).startOf("day"))
                 .filter(d => !pubDate(d).isAfter(curDate)) // (pour prototype seulement) Séances non encore publiées
                 .filter(d => !d.isBefore(curDate)) // Séances passées
                 .value(),

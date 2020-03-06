@@ -71,7 +71,7 @@
         {/if}
       </ul>
       <div class="moreContainer">
-        <a href="javascript: void 0;">Voir tous les cycles à venir</a>
+        <a class="btn-right" href="javascript: void 0;">Voir tous les cycles à venir</a>
       </div>
       <ul class="grid">
         {#each dataDisplay.zoneD as cycle, i}

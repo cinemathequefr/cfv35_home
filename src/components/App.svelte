@@ -23,8 +23,7 @@
     "Fenêtre sur les collections",
     "Parlons cinéma",
     "Archi Vives",
-    "Ciné-club Jean Douchet",
-    "KaraGarga Presents..."
+    "Ciné-club Jean Douchet"
   ];
 
   let pin;
@@ -34,11 +33,11 @@
   };
 
   onMount(async () => {
-    let dataCyclesPonctuels = await (await fetch(
+    let dataPonc = await (await fetch(
       "https://gist.githubusercontent.com/nltesown/e0992fae1cd70e5c2a764fb369ea6515/raw/cycles.json"
     )).json();
 
-    let dataCyclesReguliers = await (await fetch(
+    let dataReg = await (await fetch(
       "https://gist.githubusercontent.com/nltesown/a310518cfa88cd52b13a55f3e737d75f/raw/cycles-ext-2.json"
     )).json();
 
@@ -47,14 +46,44 @@
     )).json();
 
     // NOTICE: je retire manuellement l'item Fellini/Picasso (= exposition)
-    dataCyclesPonctuels = _(dataCyclesPonctuels)
+    dataPonc = _(dataPonc)
       .filter(d => d.idCycle !== 442)
       .value();
 
+    // Convertit les chaînes de date en objet dayjs
+    dataPonc = _(dataPonc)
+      .map(d =>
+        _({})
+          .assign(d, {
+            dateFrom: dayjs(d.dateFrom).startOf("day"),
+            dateTo: dayjs(d.dateTo).startOf("day")
+          })
+          .value()
+      )
+      .value();
+
+    dataReg = _(dataReg)
+      .mapValues(d => {
+        return _(d)
+          .map(e =>
+            _({})
+              .assign(e, {
+                dateFrom: e.dateFrom
+                  ? dayjs(e.dateFrom).startOf("day")
+                  : undefined,
+                dateTo: e.dateTo ? dayjs(e.dateTo).startOf("day") : undefined,
+                dates: _.map(e.dates, f => dayjs(f).startOf("day"))
+              })
+              .value()
+          )
+          .value();
+      })
+      .value();
+
     // Associe l'URL de l'illustration de cycle ponctuel (Attention : son chemin est `img.img`).
-    dataCyclesPonctuels = _(
+    dataPonc = _(
       _.merge(
-        _(dataCyclesPonctuels)
+        _(dataPonc)
           .groupBy("idCycleSite")
           .mapValues(e => e[0])
           .value(),
@@ -67,7 +96,7 @@
       .map()
       .value();
 
-    dataCycles = [dataCyclesPonctuels, dataCyclesReguliers];
+    dataCycles = [dataPonc, dataReg];
   });
 
   $: curDate;
