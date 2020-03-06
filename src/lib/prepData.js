@@ -14,8 +14,6 @@ import dayjs from "dayjs";
 function prepData(data, curDate, pin, options) {
   data = _.cloneDeep(data); // Bug fix
 
-  console.log(data);
-
   let dataPonc = data[0] || [];
   let dataReg = data[1] || [];
   let dataPin = null;
@@ -34,8 +32,6 @@ function prepData(data, curDate, pin, options) {
       options
     )
     .value();
-
-  if (dataPonc.length === 0 && dataReg.length === 0) return null;
 
   // Etape 1 : Cycles ponctuels : Ajout ou mise au format de propriétés calculées
   // TODO : les opérations qui ne dépendent pas de la date courante (conversion en dayjs) doivent être faites 1 seule fois, dans App.svelte après le chargement des données
@@ -104,7 +100,6 @@ function prepData(data, curDate, pin, options) {
         )
         .value()
     )
-    .pickBy(d => d.length > 0) // Retire les surcycles sans cycle (NB : les surcycles vides seront rajoutés plus loin)
     .value();
 
   // Etape 4 : Recherche de données valides à épingler en zone A
@@ -138,6 +133,7 @@ function prepData(data, curDate, pin, options) {
 
   // Etape 6 : Filtrage des cycles réguliers + ajout des surcycles vides + transformation en tableau + tri
   dataReg = _(dataReg)
+    .pickBy(d => d.length > 0) // Retire les surcycles sans cycle (NB : les surcycles vides seront rajoutés plus loin)
     .mapValues(d =>
       _(d)
         .reduce((acc, v, i) => {

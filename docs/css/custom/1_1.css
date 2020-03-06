@@ -62,6 +62,23 @@ ul.grid {
   bottom: 0;
 }
 
+.zone.a a.surcycle {
+  position: relative;
+  display: inline-block;
+  background-color: #ffffff80;
+  color: #000;
+  padding: 2px 4px;
+  font-size: 1.25rem;
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+
+.zone.a a.surcycle:hover,
+.zone.a a.surcycle:active {
+  background-color: #ffffff;
+  transition: 0.2s;
+}
+
 .zone.a .text {
   position: absolute;
   bottom: 8px;
@@ -163,19 +180,18 @@ ul.grid {
 .zone.d a.surcycle {
   flex: 0 1 auto;
   align-self: flex-end;
-  background-color: #eee;
-  padding: 8px;
+  padding-bottom: 2px;
   text-transform: uppercase;
   font-size: 0.875rem;
 }
 
 .zone.d a.surcycle:hover,
 .zone.d a.surcycle:active {
-  background-color: #ccc;
-  transition: 0.2s;
+  color: #369;
 }
 
 .zone.d a.main {
+  position: relative;
   flex: 1 1 auto;
   align-self: stretch;
   background-color: #eee;
@@ -200,8 +216,7 @@ ul.grid {
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: flex-end;
-  margin-top: -24px;
-  margin-bottom: 24px;
+  margin-bottom: 36px;
 }
 
 .moreContainer a {
@@ -221,20 +236,3 @@ ul.grid {
   background-color: #eb5;
   transition: 0.2s;
 }
-
-
-
-
-.btn-right {
-  display: inline-block;
-  background-position: 100% 50%;
-  background-size: 100%;
-  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='14' height='60' viewBox='0 0 1024 448'><path d='M128 192L0 320l192 192L0 704l128 128 320-320L128 192z' /></svg>");
-
-}
-
-
-
-
-
-

@@ -12,7 +12,6 @@
   let lookAheadPonc = 21;
   let lookAheadReg = 13;
   let dataCycles = [];
-  let dataDisplay;
 
   let surcycles = [
     "Aujourd'hui le cinéma",
@@ -155,10 +154,13 @@
     <link rel="stylesheet" href="css/custom/{customCss}.css" />
   {/if}
 </svelte:head>
-<Cycles {dataDisplay} />
+<Cycles
+  on:updatePin={e => {
+    pin = e.detail;
+  }}
+  {dataDisplay} />
 
 <!-- Tools -->
-
 <div
   class="tools"
   on:click={() => {
@@ -177,4 +179,5 @@
     <option value="1_0">1.0</option>
     <option value="1_1">1.1</option>
   </select>
+
 </div>
