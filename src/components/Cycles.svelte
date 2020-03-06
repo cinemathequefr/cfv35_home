@@ -15,7 +15,7 @@
 </pre>
 -->
 {#if dataDisplay}
-  <section style="margin-top: 96px;">
+  <section>
     <div class="container">
       <ul class="grid">
         {#if dataDisplay.zoneA.title}
@@ -89,7 +89,6 @@
                     data-type="cycle"
                     data-id={cycle.id}
                     on:click={e => {
-                      console.log();
                       dispatch('updatePin', {
                         type: 'cycle',
                         id: e.target.dataset.id
@@ -128,7 +127,6 @@
                   data-type="cycle"
                   data-id={cycle.id}
                   on:click={e => {
-                    console.log(e.target.dataset.id);
                     dispatch('updatePin', {
                       type: 'cycle',
                       id: e.target.dataset.id

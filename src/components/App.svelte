@@ -28,7 +28,7 @@
   let pin;
   pin = {
     type: "cycle",
-    id: 19005
+    id: 13005
   };
 
   onMount(async () => {
@@ -141,19 +141,17 @@
   }
 </style>
 
-<!-- 
-{#if dataDisplay}
-  <pre>
-    <code>{JSON.stringify(dataDisplay, null, 2)}</code>
-  </pre>
-{/if} -->
-
 <svelte:head>
   <title>{curDate.format('dddd D MMMM YYYY')}</title>
   {#if customCss !== ''}
     <link rel="stylesheet" href="css/custom/{customCss}.css" />
   {/if}
 </svelte:head>
+
+<section style="margin-top: 48px;">
+  <div class="container">{curDate.format('dddd D MMMM YYYY')}</div>
+</section>
+
 <Cycles
   on:updatePin={e => {
     pin = e.detail;
