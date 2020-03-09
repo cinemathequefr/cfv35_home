@@ -25,9 +25,7 @@
       {:else}
         <ul class="grid">
           {#if dataDisplay.zoneA.title}
-            <li
-              class="zone a"
-              title="{JSON.stringify(dataDisplay.zoneA, null, 2)}]">
+            <li class="zone a">
               <a href="javascript: void 0;">
                 <div
                   class="thumb"
@@ -57,21 +55,12 @@
                     {#if dataDisplay.zoneA.dateFrom && dataDisplay.zoneA.dateTo}
                       {concatDates(dataDisplay.zoneA.dateFrom.format('D MMMM'), dataDisplay.zoneA.dateTo.format('D MMMM'), ' ', 'Du ', ' au ')}
                     {:else}{dataDisplay.zoneA.date.format('ddd D MMMM')}{/if}
-                    <!--
-                    {#if dataDisplay.zoneA.date}
-                      {dataDisplay.zoneA.date.format('ddd D MMMM')}
-                    {:else}
-                      {concatDates(dataDisplay.zoneA.dateFrom.format('D MMMM'), dataDisplay.zoneA.dateTo.format('D MMMM'), ' ', 'Du ', ' au ')}
-                    {/if}
-                    -->
                   </div>
                 </div>
               </a>
             </li>
           {:else if dataDisplay.zoneA.surcycle}
-            <li
-              class="zone a"
-              title="{JSON.stringify(dataDisplay.zoneA, null, 2)}]">
+            <li class="zone a">
               <a href="javascript: void 0;">
                 <div
                   class="thumb"
@@ -94,7 +83,7 @@
             <li class="zone c ghost" />
           {:else}
             {#each dataDisplay.zoneC as cycle, i}
-              <li class="zone c" title="{JSON.stringify(cycle, null, 2)}]">
+              <li class="zone c">
                 <a href="javascript: void 0;">
                   <div class="thumb" style="background-image:url({cycle.img})">
                     <div
@@ -114,7 +103,7 @@
                       {@html nbsp(cycle.title)}
                     </div>
                     <div class="dates">
-                      {concatDates(cycle.dateFrom.format('D MMMM'), cycle.dateTo.format('D MMMM'), ' ', 'Du ', ' au ')}
+                      {_.capitalize(concatDates(cycle.dateFrom.format('D MMMM'), cycle.dateTo.format('D MMMM'), ' ', 'Du ', ' au '))}
                     </div>
                   </div>
                 </a>
@@ -129,7 +118,7 @@
         </div>
         <ul class="grid">
           {#each dataDisplay.zoneD as cycle, i}
-            <li class="zone d" title="{JSON.stringify(cycle, null, 2)}]">
+            <li class="zone d">
               {#if cycle.dates}
                 <a class="surcycle" href="javascript: void 0;">
                   {cycle.surcycle}
@@ -159,6 +148,11 @@
                       </div>
                     </div>
                   {/if}
+
+                  <div
+                    class="thumb"
+                    style="background-image:url({cycle.img})" />
+
                 </a>
               {:else}
                 <a
