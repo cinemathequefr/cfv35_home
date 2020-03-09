@@ -12,6 +12,7 @@
   let lookAheadPonc = 21;
   let lookAheadReg = 13;
   let dataCycles = [];
+  let showData = false;
 
   let surcycles = [
     "Aujourd'hui le cinéma",
@@ -43,11 +44,6 @@
     let dataImg = await (await fetch(
       "https://gist.githubusercontent.com/nltesown/3da425f30589064cebc6ce13ed2f7d10/raw/cycles-img.json"
     )).json();
-
-    // NOTICE: je retire manuellement l'item Fellini/Picasso (= exposition)
-    dataPonc = _(dataPonc)
-      .filter(d => d.idCycle !== 442)
-      .value();
 
     // Convertit les chaînes de date en objet dayjs
     dataPonc = _(dataPonc)
@@ -129,6 +125,7 @@
     background-color: #222;
     color: #eee;
     cursor: row-resize;
+    font-size: 0.875rem;
   }
 
   .tools > select {
@@ -156,7 +153,8 @@
   on:updatePin={e => {
     pin = e.detail;
   }}
-  {dataDisplay} />
+  {dataDisplay}
+  showData={!!showData} />
 
 <!-- Tools -->
 <div
@@ -177,5 +175,9 @@
     <option value="1_0">1.0</option>
     <option value="1_1">1.1</option>
   </select>
+  <label>
+    Voir les données
+    <input type="checkbox" bind:checked={showData} />
+  </label>
 
 </div>
