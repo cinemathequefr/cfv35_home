@@ -12,7 +12,8 @@ import dayjs from "dayjs";
  * @return {Object} { zoneA, isPinned, zoneC, zoneD }
  */
 function prepData(data, curDate, pin, options) {
-  data = _.cloneDeep(data); // Bug fix
+  data = _.cloneDeep(data);
+  options = _.cloneDeep(options);
 
   let dataPonc = data[0] || [];
   let dataReg = data[1] || [];
@@ -108,14 +109,14 @@ function prepData(data, curDate, pin, options) {
     // Cycles ponctuels
     if (pin.type === "cycle") {
       dataPonc = _.partition(dataPonc, d => d.id !== parseInt(pin.id, 10));
-      dataPin = dataPonc[1][0];
+      dataPin = dataPonc[1][0] || null;
       dataPonc = dataPonc[0];
       // Cycles réguliers
       if (!dataPin) {
         dataReg = _(dataReg)
           .mapValues(d => _.partition(d, e => e.id !== parseInt(pin.id, 10)))
           .mapValues(d => {
-            dataPin = dataPin || d[1][0];
+            dataPin = dataPin || d[1][0] || null;
             return d[0];
           })
           .value();
@@ -146,6 +147,12 @@ function prepData(data, curDate, pin, options) {
         .value()
     )
     .value();
+
+  // Cas particulier : si un cycle régulier est épinglé, on empêche l'affichage éventuel du bloc surcycle correspondant en zone D.
+  // (Note : mais cela n'empêche pas l'affichage éventuel en zone D d'un autre cycle régulier appartenant au même surcycle).
+  if (dataPin && dataPin.surcycle) {
+    _.pull(options.surcycles, dataPin.surcycle);
+  }
 
   dataReg = _({})
     .assign(
