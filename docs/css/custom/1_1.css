@@ -29,13 +29,15 @@ ul.grid {
 
 .zone.a a,
 .zone.b a,
-.zone.c a {
+.zone.c a,
+.zone.d a {
   position: absolute;
   display: block;
   top: 0;
   right: 0;
   bottom: 0;
   left: 0;
+  transition: 0.2s;
 }
 
 .mask {
@@ -45,12 +47,10 @@ ul.grid {
   right: 0;
   left: 0;
   bottom: 0;
-  background: linear-gradient(
-    to top,
-    rgba(0, 0, 0, 0.9) 0%,
-    rgba(0, 0, 0, 0.25) 50%,
-    rgba(0, 0, 0, 0) 100%
-  );
+  background: linear-gradient(to top,
+      rgba(0, 0, 0, 0.9) 0%,
+      rgba(0, 0, 0, 0.25) 50%,
+      rgba(0, 0, 0, 0) 100%);
 }
 
 .zone.a .thumb,
@@ -108,20 +108,17 @@ ul.grid {
   height: 295px;
   grid-column: span 1;
   grid-row: span 1;
-  display: flex;
-  flex-direction: column;
-  flex-wrap: wrap;
-  justify-content: flex-start;
-  align-content: flex-start;
-  align-items: flex-end;
+}
+
+.zone.c .label {
+  transition: 0.2s;
 }
 
 .zone.c a:hover,
 .zone.c a:active,
 .zone.c a:hover .label,
 .zone.c a:active .label {
-  background-color: #ccc;
-  transition: 0.2s;
+  background-color: #8cbfbc;
 }
 
 .zone.c .thumb {
@@ -131,13 +128,9 @@ ul.grid {
 
 .zone.c .text {
   position: relative;
-  flex: 1 0 auto;
-  align-self: auto;
   width: 100%;
   height: 85px;
-  align-self: stretch;
   text-align: center;
-  color: #111;
 }
 
 .zone.c .label {
@@ -165,63 +158,48 @@ ul.grid {
   font-size: 1.125rem;
   font-family: QuicksandCF;
   text-transform: uppercase;
-  /* white-space: nowrap; */
 }
 
 .zone.d {
-  display: flex;
-  flex-direction: column;
-  flex-wrap: nowrap;
-  justify-content: flex-start;
-  align-content: flex-start;
-  align-items: flex-start;
-  height: 210px;
-  margin-bottom: 24px;
+  display: block;
+  position: relative;
+  height: 250px;
+  /* background-color: #ccc; */
+}
+
+.zone.d .thumb {
+  display: block;
+  width: 100%;
+  height: 145px;
+  background-position: 50% 50%;
 }
 
 .zone.d a.surcycle {
-  flex: 0 1 auto;
-  align-self: flex-end;
-  padding-bottom: 2px;
+  bottom: auto;
+  left: auto;
+  padding: 8px;
   text-transform: uppercase;
-  font-size: 0.875rem;
+  font-size: 0.813rem;
+  background-color: #fff;
 }
 
 .zone.d a.surcycle:hover,
 .zone.d a.surcycle:active {
-  color: #369;
-}
-
-.zone.d a.main {
-  display: flex;
-  flex-direction: column;
-  flex-wrap: nowrap;
-  justify-content: flex-start;
-  align-content: stretch;
-  align-items: flex-start;
-  position: relative;
-  flex: 1 1 auto;
-  align-self: stretch;
-  /* background-color: #eee; */
-  /* padding: 8px; */
-  padding: 0 0 8px 0;
-  border-top: solid 1px #ccc;
-}
-
-.zone.d a.main:hover,
-.zone.d a.main:active {
-  background-color: #ccc;
   transition: 0.2s;
+  color: #8cbfbc;
 }
 
-.zone.d a.main .text {
-  flex: 1 0 auto;
-  align-self: auto;
+.zone.d a:not(.surcycle):hover,
+.zone.d a:not(.surcycle):active {
+  background-color: #8cbfbc;
+}
+
+.zone.d .text {
+  position: relative;
   width: 100%;
-  height: 75px;
-  align-self: stretch;
-  color: #111;
-  padding: 8px 8px 0 8px;
+  height: 95px;
+  padding: 12px 12px 0 12px;
+  box-sizing: border-box;
 }
 
 .zone.d .title {
@@ -229,13 +207,6 @@ ul.grid {
   text-transform: uppercase;
   font-weight: 700;
   font-size: 1rem;
-}
-
-.zone.d .thumb {
-  flex: 1 0 auto;
-  align-self: stretch;
-  height: 115px;
-  background-position: 50% 50%;
 }
 
 .moreContainer {

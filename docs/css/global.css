@@ -89,7 +89,14 @@ section > .container {
   height: 28px;
 }
 
-.zone:hover .pin {
+.zone.d .pin {
+  top: auto;
+  bottom: 4px;
+}
+
+.zone.a:hover .pin,
+.zone.c:hover .pin,
+.zone.d a:not(.surcycle):hover .pin {
   opacity: 1;
 }
 

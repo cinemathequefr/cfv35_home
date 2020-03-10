@@ -120,10 +120,22 @@
           {#each dataDisplay.zoneD as cycle, i}
             <li class="zone d">
               {#if cycle.dates}
-                <a class="surcycle" href="javascript: void 0;">
-                  {cycle.surcycle}
-                </a>
-                <a class="main" href="javascript: void 0;">
+                <a href="javascript: void 0;">
+                  <div
+                    class="thumb"
+                    style="background-image:url({cycle.img})" />
+                  <div class="text">
+                    <div class="title">
+                      {@html cycle.title}
+                    </div>
+                    <div class="dates">
+                      {#if cycle.dateFrom && cycle.dateTo}
+                        {_.capitalize(concatDates(cycle.dateFrom.format('D MMMM'), cycle.dateTo.format('D MMMM'), ' ', 'Du ', ' au '))}
+                      {:else}
+                        {_.capitalize(concatDates(cycle.date.format('ddd D MMMM'), cycle.date.format('ddd D MMMM')))}
+                      {/if}
+                    </div>
+                  </div>
                   <div
                     class="pin icon-pin"
                     data-type="cycle"
@@ -134,35 +146,15 @@
                         id: e.target.dataset.id
                       });
                     }} />
-                  {#if cycle.id}
-                    <div class="text">
-                      <div class="title">
-                        {@html nbsp(cycle.title)}
-                      </div>
-                      <div class="dates">
-                        {#if cycle.dateFrom && cycle.dateTo}
-                          {_.capitalize(concatDates(cycle.dateFrom.format('D MMMM'), cycle.dateTo.format('D MMMM'), ' ', 'Du ', ' au '))}
-                        {:else}
-                          {_.capitalize(concatDates(cycle.date.format('ddd D MMMM'), cycle.date.format('ddd D MMMM')))}
-                        {/if}
-                      </div>
-                    </div>
-                  {/if}
-
-                  <div
-                    class="thumb"
-                    style="background-image:url({cycle.img})" />
 
                 </a>
+                <a class="surcycle" href="javascript: void 0;">
+                  {cycle.surcycle}
+                </a>
               {:else}
-                <a
-                  class="main"
-                  style="margin-top: 20px;"
-                  href="javascript: void 0;">
+                <a href="javascript: void 0;">
                   <div class="text">
-                    <div class="title">
-                      {@html nbsp(cycle.surcycle)}
-                    </div>
+                    <div class="title">{cycle.surcycle}</div>
                   </div>
                 </a>
               {/if}
