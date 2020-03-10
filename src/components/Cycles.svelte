@@ -146,15 +146,17 @@
                         id: e.target.dataset.id
                       });
                     }} />
-
                 </a>
                 <a class="surcycle" href="javascript: void 0;">
                   {cycle.surcycle}
                 </a>
               {:else}
                 <a href="javascript: void 0;">
+                  <div class="thumb" style="background-color:#709996;" />
                   <div class="text">
-                    <div class="title">{cycle.surcycle}</div>
+                    <div class="title">
+                      {@html cycle.surcycle}
+                    </div>
                   </div>
                 </a>
               {/if}
