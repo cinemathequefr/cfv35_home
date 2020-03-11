@@ -85,18 +85,9 @@
             {#each dataDisplay.zoneC as cycle, i}
               <li class="zone c">
                 <a href="javascript: void 0;">
-                  <div class="thumb" style="background-image:url({cycle.img})">
-                    <div
-                      class="pin icon-pin"
-                      data-type="cycle"
-                      data-id={cycle.id}
-                      on:click={e => {
-                        dispatch('updatePin', {
-                          type: 'cycle',
-                          id: e.target.dataset.id
-                        });
-                      }} />
-                  </div>
+                  <div
+                    class="thumb"
+                    style="background-image:url({cycle.img})" />
                   <div class="text">
                     <div class="label">{cycle.label}</div>
                     <div class="title">
@@ -106,6 +97,16 @@
                       {_.capitalize(concatDates(cycle.dateFrom.format('D MMMM'), cycle.dateTo.format('D MMMM'), ' ', 'Du ', ' au '))}
                     </div>
                   </div>
+                  <div
+                    class="pin icon-pin"
+                    data-type="cycle"
+                    data-id={cycle.id}
+                    on:click={e => {
+                      dispatch('updatePin', {
+                        type: 'cycle',
+                        id: e.target.dataset.id
+                      });
+                    }} />
                 </a>
               </li>
             {/each}
@@ -113,13 +114,13 @@
         </ul>
         <div class="moreContainer">
           <a class="btn-right" href="javascript: void 0;">
-            Voir tous les cycles à venir
+            Tous les cycles à venir
           </a>
         </div>
         <ul class="grid">
           {#each dataDisplay.zoneD as cycle, i}
-            <li class="zone d">
-              {#if cycle.dates}
+            {#if cycle.dates}
+              <li class="zone d">
                 <a href="javascript: void 0;">
                   <div
                     class="thumb"
@@ -150,17 +151,19 @@
                 <a class="surcycle" href="javascript: void 0;">
                   {cycle.surcycle}
                 </a>
-              {:else}
+              </li>
+            {:else}
+              <li class="zone d surcycle-container">
                 <a href="javascript: void 0;">
-                  <div class="thumb" style="background-color:#709996;" />
+                  <div class="thumb" />
                   <div class="text">
                     <div class="title">
                       {@html cycle.surcycle}
                     </div>
                   </div>
                 </a>
-              {/if}
-            </li>
+              </li>
+            {/if}
           {/each}
         </ul>
       {/if}

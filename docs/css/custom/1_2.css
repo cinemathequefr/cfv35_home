@@ -16,9 +16,9 @@ ul.grid {
 }
 
 .zone .thumb {
-  background-color: #709996;
-  background-image: none !important;
   display: block;
+  background-position: bottom center;
+  background-size: cover;
 }
 
 .zone.a {
@@ -41,7 +41,18 @@ ul.grid {
 }
 
 .mask {
-  display: none;
+  position: absolute;
+  display: block;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  background: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0.9) 0%,
+    rgba(0, 0, 0, 0.25) 50%,
+    rgba(0, 0, 0, 0) 100%
+  );
 }
 
 .zone.a .thumb,
@@ -164,9 +175,15 @@ ul.grid {
   background-position: 50% 50%;
 }
 
+.zone.d.surcycle-container .thumb {
+  background-color: #709996;
+}
+
 .zone.d a.surcycle {
-  bottom: auto;
-  left: auto;
+  bottom: 105px;
+  left: 0;
+  top: auto;
+  right: auto;
   padding: 8px;
   text-transform: uppercase;
   font-size: 0.813rem;
@@ -197,30 +214,4 @@ ul.grid {
   text-transform: uppercase;
   font-weight: 700;
   font-size: 1rem;
-}
-
-.moreContainer {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  justify-content: flex-end;
-  margin-bottom: 36px;
-}
-
-.moreContainer a {
-  order: 0;
-  flex: 0 1 auto;
-  align-self: auto;
-  background-color: #fc6;
-  color: #960;
-  border: solid 1px #9609;
-  padding: 8px;
-  min-width: 200px;
-  text-align: center;
-}
-
-.moreContainer a:hover,
-.moreContainer a:active {
-  background-color: #eb5;
-  transition: 0.2s;
 }

@@ -7,7 +7,7 @@
   import Cycles from "./Cycles.svelte";
   import { prepData } from "../lib/prepData.js";
 
-  let customCss = "1_1";
+  let customCss = "1_2";
   let curDate = dayjs().startOf("day");
   let lookAheadPonc = 21;
   let lookAheadReg = 13;
@@ -174,6 +174,7 @@
   <select bind:value={customCss}>
     <option value="1_0">1.0</option>
     <option value="1_1">1.1</option>
+    <option value="1_2">1.2</option>
   </select>
   <label>
     Voir les données
