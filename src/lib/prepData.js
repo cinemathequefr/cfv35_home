@@ -105,9 +105,9 @@ function prepData(data, curDate, pin, options) {
 
   // Etape 4 : Recherche de données valides à épingler en zone A
   // Si c'est un cycle, il est retiré de `dataReg` ou `dataPonc`
-  if (pin && !_.isUndefined(pin.type) && !_.isUndefined(pin.id)) {
+  if (pin && !_.isUndefined(pin.type)) {
     // Cycles ponctuels
-    if (pin.type === "cycle") {
+    if (pin.type === "cycle" && !_.isUndefined(pin.id)) {
       dataPonc = _.partition(dataPonc, d => d.id !== parseInt(pin.id, 10));
       dataPin = dataPonc[1][0] || null;
       dataPonc = dataPonc[0];
@@ -121,9 +121,12 @@ function prepData(data, curDate, pin, options) {
           })
           .value();
       }
-      // TODO: autres types d'items
-      isPinned = !!dataPin;
     }
+    // TODO: autres types d'items
+    if (pin.type === "message") {
+      dataPin = pin;
+    }
+    isPinned = !!dataPin;
   }
 
   // Etape 5 : Filtrage et tri des cycles ponctuels

@@ -1,19 +1,15 @@
 <script>
   import { createEventDispatcher } from "svelte";
-
   import { beforeAfterStr as ba, concatDates, nbsp } from "../lib/format.js";
   import _ from "lodash";
+
   export let dataDisplay, showData;
   const dispatch = createEventDispatcher();
+
   let pinned;
   $: pinned = dataDisplay.isPinned;
 </script>
 
-<!--
-<pre>
-  <code>{JSON.stringify(dataDisplay, null, 2)}</code>
-</pre>
--->
 {#if dataDisplay}
   <section>
     <div class="container">
@@ -24,13 +20,15 @@
         </pre>
       {:else}
         <ul class="grid">
-          {#if dataDisplay.zoneA.title}
+          {#if dataDisplay.zoneA.type === 'cycle'}
+            <!-- {#if dataDisplay.zoneA.title} -->
             <li class="zone a">
               <a href="javascript: void 0;">
                 <div
                   class="thumb"
                   style="background-image:url({dataDisplay.zoneA.img})" />
                 <div class="mask" />
+                <div class="hovermask" />
                 <div
                   data-type="cycle"
                   data-id={dataDisplay.zoneA.id}
@@ -59,6 +57,30 @@
                 </div>
               </a>
             </li>
+          {:else if (dataDisplay.zoneA.type = 'message')}
+            <li class="zone a message">
+              <a href="javascript: void 0;">
+                <div
+                  class="thumb"
+                  style="background-image:url({dataDisplay.zoneA.img})" />
+                <div class="mask" />
+                <div class="hovermask" />
+                <div
+                  class="pin icon-pin"
+                  class:pinned
+                  on:click={e => {
+                    dispatch('updatePin', null);
+                  }} />
+                <div class="text">
+                  <div class="title">
+                    {@html nbsp(dataDisplay.zoneA.title)}
+                  </div>
+                  {@html nbsp(dataDisplay.zoneA.msg)}
+                </div>
+              </a>
+            </li>
+
+            <!--
           {:else if dataDisplay.zoneA.surcycle}
             <li class="zone a">
               <a href="javascript: void 0;">
@@ -71,6 +93,7 @@
                 </div>
               </a>
             </li>
+-->
           {/if}
           <li class="zone b">
             <a href="javascript: void 0;">

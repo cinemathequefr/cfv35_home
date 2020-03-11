@@ -28,9 +28,16 @@
 
   let pin;
   pin = {
-    type: "cycle",
-    id: 13005
+    type: "message",
+    title: "La Cinémathèque française<br>est exceptionnellement fermée",
+    msg: "Revenez un autre jour.",
+    img:
+      "https://i2.wp.com/www.theculturemap.com/wp-content/uploads/2018/09/cinematheque-francaise-frank-gehry-paris-architecture.jpg"
   };
+  // pin = {
+  //   type: "cycle",
+  //   id: 13005
+  // };
 
   onMount(async () => {
     let dataPonc = await (await fetch(
@@ -50,6 +57,7 @@
       .map(d =>
         _({})
           .assign(d, {
+            type: "cycle",
             dateFrom: dayjs(d.dateFrom).startOf("day"),
             dateTo: dayjs(d.dateTo).startOf("day")
           })
@@ -63,6 +71,7 @@
           .map(e =>
             _({})
               .assign(e, {
+                type: "cycle",
                 dateFrom: e.dateFrom
                   ? dayjs(e.dateFrom).startOf("day")
                   : undefined,
