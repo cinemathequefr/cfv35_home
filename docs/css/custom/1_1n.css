@@ -17,8 +17,8 @@ ul.grid {
 
 .zone .thumb {
   display: block;
-  background-position: bottom center;
-  background-size: cover;
+  background-color: #709996;
+  background-image: none !important;
 }
 
 .zone.a {
@@ -41,18 +41,7 @@ ul.grid {
 }
 
 .mask {
-  position: absolute;
-  display: block;
-  top: 0;
-  right: 0;
-  left: 0;
-  bottom: 0;
-  background: linear-gradient(
-    to top,
-    rgba(0, 0, 0, 0.9) 0%,
-    rgba(0, 0, 0, 0.25) 50%,
-    rgba(0, 0, 0, 0) 100%
-  );
+  display: none;
 }
 
 .zone.a .thumb,

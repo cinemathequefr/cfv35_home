@@ -7,7 +7,7 @@
   import Cycles from "./Cycles.svelte";
   import { prepData } from "../lib/prepData.js";
 
-  let customCss = "1_2";
+  let customCss = "1_1";
   let curDate = dayjs().startOf("day");
   let lookAheadPonc = 21;
   let lookAheadReg = 13;
@@ -30,7 +30,7 @@
   pin = {
     type: "message",
     title: "La Cinémathèque française<br>est exceptionnellement fermée",
-    msg: "Revenez un autre jour.",
+    msg: "Revenez un autre jour !",
     img:
       "https://i2.wp.com/www.theculturemap.com/wp-content/uploads/2018/09/cinematheque-francaise-frank-gehry-paris-architecture.jpg"
   };
@@ -103,7 +103,6 @@
     dataCycles = [dataPonc, dataReg];
   });
 
-  $: curDate;
   $: dataDisplay = prepData(dataCycles, curDate, pin, {
     lookAheadPonc: lookAheadPonc,
     lookAheadReg: lookAheadReg,
@@ -137,7 +136,17 @@
     font-size: 0.875rem;
   }
 
+  .tools > .date {
+    display: inline-block;
+  }
+
+  .tools > .date:hover,
+  .tools > .date:hover {
+    color: #9cf;
+  }
+
   .tools > select {
+    display: inline-block;
     font-size: 0.875rem !important;
     margin: 4px !important;
   }
@@ -166,28 +175,31 @@
   showData={!!showData} />
 
 <!-- Tools -->
-<div
-  class="tools"
-  on:click={() => {
-    curDate = dayjs();
-  }}
-  on:DOMMouseScroll={e => {
-    curDate = incrOrDecrDate(curDate, e.deltaY);
-    e.preventDefault();
-  }}
-  on:wheel={e => {
-    curDate = incrOrDecrDate(curDate, e.deltaY);
-    e.preventDefault();
-  }}>
-  {curDate.format('YYYY-MM-DD')}
+<div class="tools">
+  <div
+    class="date"
+    on:click={() => {
+      curDate = dayjs();
+    }}
+    on:DOMMouseScroll={e => {
+      curDate = incrOrDecrDate(curDate, e.deltaY);
+      e.preventDefault();
+    }}
+    on:wheel={e => {
+      curDate = incrOrDecrDate(curDate, e.deltaY);
+      e.preventDefault();
+    }}>
+    {curDate.format('YYYY-MM-DD')}
+  </div>
+
   <select bind:value={customCss}>
+    <option value="1_0n">1.0n</option>
     <option value="1_0">1.0</option>
+    <option value="1_1n">1.1n</option>
     <option value="1_1">1.1</option>
-    <option value="1_2">1.2</option>
   </select>
   <label>
     Voir les données
     <input type="checkbox" bind:checked={showData} />
   </label>
-
 </div>

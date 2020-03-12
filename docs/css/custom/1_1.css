@@ -99,6 +99,21 @@ ul.grid {
   margin: 0.25rem 0;
 }
 
+.zone.a.message .text {
+  font-size: 1.25rem;
+  font-weight: 300;
+  bottom: 16px;
+}
+
+.zone.a.message .title {
+  font-family: QuicksandCF;
+  text-transform: uppercase;
+  font-size: 2rem;
+  font-weight: 400;
+  line-height: 2.25rem;
+  margin: 0.125rem 0;
+}
+
 .zone.b {
   background-color: #963;
   grid-column: 3;
@@ -180,8 +195,10 @@ ul.grid {
 }
 
 .zone.d a.surcycle {
-  bottom: auto;
-  left: auto;
+  bottom: 105px;
+  left: 0;
+  top: auto;
+  right: auto;
   padding: 8px;
   text-transform: uppercase;
   font-size: 0.813rem;
