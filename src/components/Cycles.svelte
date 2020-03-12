@@ -7,6 +7,7 @@
   const dispatch = createEventDispatcher();
 
   let pinned;
+  // $: dataDisplay;
   $: pinned = dataDisplay.isPinned;
 </script>
 
@@ -57,7 +58,7 @@
                 </div>
               </a>
             </li>
-          {:else if (dataDisplay.zoneA.type = 'message')}
+          {:else if dataDisplay.zoneA.type === 'message'}
             <li class="zone a message">
               <a href="javascript: void 0;">
                 <div
@@ -79,21 +80,8 @@
                 </div>
               </a>
             </li>
-
-            <!--
-          {:else if dataDisplay.zoneA.surcycle}
-            <li class="zone a">
-              <a href="javascript: void 0;">
-                <div
-                  class="thumb"
-                  style="background-image:url({dataDisplay.zoneA.img})" />
-                <div class="mask" />
-                <div class="text">
-                  <div class="title">{dataDisplay.zoneA.surcycle}</div>
-                </div>
-              </a>
-            </li>
--->
+          {:else}
+            <li class="zone a" />
           {/if}
           <li class="zone b">
             <a href="javascript: void 0;">
