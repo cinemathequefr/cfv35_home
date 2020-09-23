@@ -8,7 +8,8 @@
   import { prepData } from "../lib/prepData.js";
 
   let customCss = "1_1";
-  let curDate = dayjs().startOf("day");
+  let curDate = dayjs("2020-03-01").startOf("day");
+  // let curDate = dayjs().startOf("day");
   let lookAheadPonc = 21;
   let lookAheadReg = 13;
   let dataCycles = [];
@@ -23,7 +24,7 @@
     "Fenêtre sur les collections",
     "Parlons cinéma",
     "Archi Vives",
-    "Ciné-club Jean Douchet"
+    "Ciné-club Jean Douchet",
   ];
 
   let pin;
@@ -32,7 +33,7 @@
     title: "La Cinémathèque française<br>est exceptionnellement fermée",
     msg: "Revenez un autre jour !",
     img:
-      "https://i2.wp.com/www.theculturemap.com/wp-content/uploads/2018/09/cinematheque-francaise-frank-gehry-paris-architecture.jpg"
+      "https://i2.wp.com/www.theculturemap.com/wp-content/uploads/2018/09/cinematheque-francaise-frank-gehry-paris-architecture.jpg",
   };
   // pin = {
   //   type: "cycle",
@@ -40,35 +41,41 @@
   // };
 
   onMount(async () => {
-    let dataPonc = await (await fetch(
-      "https://gist.githubusercontent.com/nltesown/e0992fae1cd70e5c2a764fb369ea6515/raw/cycles.json"
-    )).json();
+    let dataPonc = await (
+      await fetch(
+        "https://gist.githubusercontent.com/nltesown/e0992fae1cd70e5c2a764fb369ea6515/raw/cycles.json"
+      )
+    ).json();
 
-    let dataReg = await (await fetch(
-      "https://gist.githubusercontent.com/nltesown/a310518cfa88cd52b13a55f3e737d75f/raw/cycles-ext-2.json"
-    )).json();
+    let dataReg = await (
+      await fetch(
+        "https://gist.githubusercontent.com/nltesown/a310518cfa88cd52b13a55f3e737d75f/raw/cycles-ext-2.json"
+      )
+    ).json();
 
-    let dataImg = await (await fetch(
-      "https://gist.githubusercontent.com/nltesown/3da425f30589064cebc6ce13ed2f7d10/raw/cycles-img.json"
-    )).json();
+    let dataImg = await (
+      await fetch(
+        "https://gist.githubusercontent.com/nltesown/3da425f30589064cebc6ce13ed2f7d10/raw/cycles-img.json"
+      )
+    ).json();
 
     // Convertit les chaînes de date en objet dayjs
     dataPonc = _(dataPonc)
-      .map(d =>
+      .map((d) =>
         _({})
           .assign(d, {
             type: "cycle",
             dateFrom: dayjs(d.dateFrom).startOf("day"),
-            dateTo: dayjs(d.dateTo).startOf("day")
+            dateTo: dayjs(d.dateTo).startOf("day"),
           })
           .value()
       )
       .value();
 
     dataReg = _(dataReg)
-      .mapValues(d => {
+      .mapValues((d) => {
         return _(d)
-          .map(e =>
+          .map((e) =>
             _({})
               .assign(e, {
                 type: "cycle",
@@ -76,7 +83,7 @@
                   ? dayjs(e.dateFrom).startOf("day")
                   : undefined,
                 dateTo: e.dateTo ? dayjs(e.dateTo).startOf("day") : undefined,
-                dates: _.map(e.dates, f => dayjs(f).startOf("day"))
+                dates: _.map(e.dates, (f) => dayjs(f).startOf("day")),
               })
               .value()
           )
@@ -89,11 +96,11 @@
       _.merge(
         _(dataPonc)
           .groupBy("idCycleSite")
-          .mapValues(e => e[0])
+          .mapValues((e) => e[0])
           .value(),
         _(dataImg)
           .groupBy("idCycleSite")
-          .mapValues(e => e[0])
+          .mapValues((e) => e[0])
           .value()
       )
     )
@@ -106,7 +113,7 @@
   $: dataDisplay = prepData(dataCycles, curDate, pin, {
     lookAheadPonc: lookAheadPonc,
     lookAheadReg: lookAheadReg,
-    surcycles: surcycles
+    surcycles: surcycles,
   });
 
   /**
@@ -168,7 +175,7 @@
 </section>
 
 <Cycles
-  on:updatePin={e => {
+  on:updatePin={(e) => {
     pin = e.detail;
   }}
   {dataDisplay}
@@ -181,11 +188,11 @@
     on:click={() => {
       curDate = dayjs();
     }}
-    on:DOMMouseScroll={e => {
+    on:DOMMouseScroll={(e) => {
       curDate = incrOrDecrDate(curDate, e.deltaY);
       e.preventDefault();
     }}
-    on:wheel={e => {
+    on:wheel={(e) => {
       curDate = incrOrDecrDate(curDate, e.deltaY);
       e.preventDefault();
     }}>
@@ -199,7 +206,6 @@
     <option value="1_1">1.1</option>
   </select>
   <label>
-    Voir les données
-    <input type="checkbox" bind:checked={showData} />
+    Voir les données <input type="checkbox" bind:checked={showData} />
   </label>
 </div>
