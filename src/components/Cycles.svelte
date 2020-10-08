@@ -14,7 +14,6 @@
 {#if dataDisplay}
   <section>
     <div class="container">
-
       {#if showData}
         <pre>
           <code>{JSON.stringify(dataDisplay, null, 2)}</code>
@@ -69,7 +68,7 @@
                 <div
                   class="pin icon-pin"
                   class:pinned
-                  on:click={e => {
+                  on:click={(e) => {
                     dispatch('updatePin', null);
                   }} />
                 <div class="text">
@@ -112,10 +111,10 @@
                     class="pin icon-pin"
                     data-type="cycle"
                     data-id={cycle.id}
-                    on:click={e => {
+                    on:click={(e) => {
                       dispatch('updatePin', {
                         type: 'cycle',
-                        id: e.target.dataset.id
+                        id: e.target.dataset.id,
                       });
                     }} />
                 </a>
@@ -128,7 +127,7 @@
             Tous les cycles à venir
           </a>
         </div>
-        <ul class="grid">
+        <ul class="grid rdv">
           {#each dataDisplay.zoneD as cycle, i}
             {#if cycle.dates}
               <li class="zone d">
@@ -152,15 +151,13 @@
                     class="pin icon-pin"
                     data-type="cycle"
                     data-id={cycle.id}
-                    on:click={e => {
+                    on:click={(e) => {
                       dispatch('updatePin', {
                         type: 'cycle',
-                        id: e.target.dataset.id
+                        id: e.target.dataset.id,
                       });
                     }} />
-                </a>
-                <a class="surcycle" href="javascript: void 0;">
-                  {cycle.surcycle}
+                  <div class="surcycle">{cycle.surcycle}</div>
                 </a>
               </li>
             {:else}

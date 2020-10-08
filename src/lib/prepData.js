@@ -29,7 +29,7 @@ function prepData(data, curDate, pin, options) {
       {
         lookAheadPonc: 0,
         lookAheadReg: 0,
-        surcycles: []
+        surcycles: [],
       },
       options
     )
@@ -38,12 +38,12 @@ function prepData(data, curDate, pin, options) {
   // Etape 1 : Cycles ponctuels : Ajout ou mise au format de propriétés calculées
   // TODO : les opérations qui ne dépendent pas de la date courante (conversion en dayjs) doivent être faites 1 seule fois, dans App.svelte après le chargement des données
   dataPonc = _(dataPonc)
-    .map(a =>
+    .map((a) =>
       _(a)
-        .thru(b => {
-          let startsIn = dayjs(b.dateFrom)
-            .startOf("day")
-            .diff(curDate, "days");
+        .thru((b) => {
+          // let startsIn = dayjs(b.dateFrom)
+          //   .startOf("day")
+          //   .diff(curDate, "days");
           let progress =
             b.dateTo === null
               ? 0
@@ -53,13 +53,13 @@ function prepData(data, curDate, pin, options) {
                     100,
                   1
                 );
-          let progressPositive = progress > 0 ? progress : 0;
+          // let progressPositive = progress > 0 ? progress : 0;
           return _({})
             .assign(a, {
               id: b.idCycleSite,
-              startsIn: startsIn,
-              progress: progress,
-              progressPositive: progressPositive
+              // startsIn: startsIn,
+              progress,
+              //  progressPositive: progressPositive
             })
             .value();
         })
@@ -69,7 +69,7 @@ function prepData(data, curDate, pin, options) {
 
   // Etape 2 : Cycles ponctuels : retire les cycles terminés ou non publiés
   dataPonc = _(dataPonc)
-    .reject(d => {
+    .reject((d) => {
       if (d.date === null) return false;
       return (
         d.dateTo.isBefore(curDate, "days") ||
@@ -83,19 +83,19 @@ function prepData(data, curDate, pin, options) {
   dataReg = _(dataReg)
     .mapValues((b, k) =>
       _(b)
-        .map(c =>
+        .map((c) =>
           _(c)
             .assign({
               dates: _(c.dates)
-                .filter(d => !pubDate(d).isAfter(curDate)) // (pour prototype seulement) Séances non encore publiées
-                .filter(d => !d.isBefore(curDate)) // Séances passées
+                .filter((d) => !pubDate(d).isAfter(curDate)) // (pour prototype seulement) Séances non encore publiées
+                .filter((d) => !d.isBefore(curDate)) // Séances passées
                 .value(),
-              surcycle: k
+              surcycle: k,
             })
             .value()
         )
-        .filter(c => c.dates.length > 0) // Retire les cycles sans date à venir
-        .map(c =>
+        .filter((c) => c.dates.length > 0) // Retire les cycles sans date à venir
+        .map((c) =>
           _(c)
             .assign({ date: _.min(c.dates) })
             .value()
@@ -109,7 +109,7 @@ function prepData(data, curDate, pin, options) {
   if (pin && !_.isUndefined(pin.type)) {
     // Cycles ponctuels
     if (pin.type === "cycle" && !_.isUndefined(pin.id)) {
-      dataPonc = _.partition(dataPonc, d => d.id !== parseInt(pin.id, 10));
+      dataPonc = _.partition(dataPonc, (d) => d.id !== parseInt(pin.id, 10));
       dataPin = dataPonc[1][0] || {};
       // dataPin = dataPonc[1][0] || null;
       dataPonc = dataPonc[0];
@@ -117,8 +117,10 @@ function prepData(data, curDate, pin, options) {
       if (_.isEmpty(dataPin)) {
         // if (!dataPin) {
         dataReg = _(dataReg)
-          .mapValues(d => _.partition(d, e => e.id !== parseInt(pin.id, 10)))
-          .mapValues(d => {
+          .mapValues((d) =>
+            _.partition(d, (e) => e.id !== parseInt(pin.id, 10))
+          )
+          .mapValues((d) => {
             dataPin = !_.isEmpty(dataPin)
               ? dataPin
               : !_.isEmpty(d[1][0])
@@ -141,14 +143,14 @@ function prepData(data, curDate, pin, options) {
 
   // Etape 5 : Filtrage et tri des cycles ponctuels
   dataPonc = _(dataPonc)
-    .filter(b => b.dateFrom.diff(curDate, "days") <= options.lookAheadPonc)
-    .orderBy(b => Math.abs(b.progress))
+    .filter((b) => b.dateFrom.diff(curDate, "days") <= options.lookAheadPonc)
+    .orderBy((b) => Math.abs(b.progress))
     .value();
 
   // Etape 6 : Filtrage des cycles réguliers + ajout des surcycles vides + transformation en tableau + tri
   dataReg = _(dataReg)
-    .pickBy(d => d.length > 0) // Retire les surcycles sans cycle (NB : les surcycles vides seront rajoutés plus loin)
-    .mapValues(d =>
+    .pickBy((d) => d.length > 0) // Retire les surcycles sans cycle (NB : les surcycles vides seront rajoutés plus loin)
+    .mapValues((d) =>
       _(d)
         .reduce((acc, v, i) => {
           if (i === 0 || v.date.diff(curDate, "days") <= options.lookAheadReg) {
@@ -179,7 +181,7 @@ function prepData(data, curDate, pin, options) {
         .mapValues((v, k) => {
           return {
             type: "surcycle",
-            surcycle: k
+            surcycle: k,
           };
         })
         .value(),
@@ -187,7 +189,7 @@ function prepData(data, curDate, pin, options) {
     )
     .map()
     .flatten()
-    .orderBy(d => d.date)
+    .orderBy((d) => d.date)
     .value();
 
   // Etape 7 : Si aucun item n'est épinglé, placement du premier cycle (ponctuel ou, à défaut, régulier)
@@ -213,7 +215,7 @@ function prepData(data, curDate, pin, options) {
     isPinned,
     zoneA,
     zoneC,
-    zoneD
+    zoneD,
   };
 }
 
