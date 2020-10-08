@@ -7,8 +7,13 @@
   import Cycles from "./Cycles.svelte";
   import { prepData } from "../lib/prepData.js";
 
+<<<<<<< HEAD
   let customCss = "1_2";
   let curDate = dayjs("2020-03-06").startOf("day");
+=======
+  let customCss = "1_1";
+  let curDate = dayjs("2020-03-01").startOf("day");
+>>>>>>> 7cb8cb01e4aedfb7e09aa675f05e19c0ade058c8
   // let curDate = dayjs().startOf("day");
   let lookAheadPonc = 21;
   let lookAheadReg = 13;
@@ -188,11 +193,11 @@
     on:click={() => {
       curDate = dayjs();
     }}
-    on:DOMMouseScroll={e => {
+    on:DOMMouseScroll={(e) => {
       curDate = incrOrDecrDate(curDate, e.deltaY);
       e.preventDefault();
     }}
-    on:wheel={e => {
+    on:wheel={(e) => {
       curDate = incrOrDecrDate(curDate, e.deltaY);
       e.preventDefault();
     }}>
@@ -207,7 +212,6 @@
     <option value="1_2">1.2</option>
   </select>
   <label>
-    Voir les données
-    <input type="checkbox" bind:checked={showData} />
+    Voir les données <input type="checkbox" bind:checked={showData} />
   </label>
 </div>
