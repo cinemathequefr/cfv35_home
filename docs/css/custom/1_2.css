@@ -10,7 +10,7 @@ ul.grid.rdv {
   grid-template-columns: 1fr 1fr 1fr 1fr;
 }
 
-section>.container {
+section > .container {
   max-width: 1380px;
 }
 
@@ -60,10 +60,12 @@ section>.container {
   right: 0;
   left: 0;
   bottom: 0;
-  background: linear-gradient(to top,
-      rgba(0, 0, 0, 0.9) 0%,
-      rgba(0, 0, 0, 0.25) 50%,
-      rgba(0, 0, 0, 0) 100%);
+  background: linear-gradient(
+    to top,
+    /* rgba(0, 0, 0, 0.9) 0%, */ rgba(0, 0, 0, 0.6) 0%,
+    rgba(0, 0, 0, 0.25) 50%,
+    rgba(0, 0, 0, 0) 100%
+  );
 }
 
 .zone.a .thumb,
@@ -228,7 +230,6 @@ section>.container {
   /* transition: 0.2s; */
   background-color: #8cbfbc;
 }
-
 
 /*
 .zone.d a.surcycle {
